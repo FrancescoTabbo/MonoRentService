@@ -12,6 +12,7 @@ app.get('/', function (req, res) {
 });
 
 app.post('/login', function(req, res){
+    console.log("uno");
     var conn = mysql.createConnection({
         host: "remotemysql.com",
         user: "JPQ7c5oklq",
@@ -22,16 +23,19 @@ app.post('/login', function(req, res){
     var password = req.body.password;
 
     conn.connect(function(err) {
+        console.log("due");
         if (err) throw err;
         console.log("Connected!");
         conn.query("SELECT * FROM User WHERE user = " + nickname + " AND password =" + password ,function(errr, fields){
             if (errr) throw errr;
+            console.log("tre");
             res.send(fields);
         });
     });
 });
 
 app.post('/register', function(req, res){
+    console.log("uno");
     var conn = mysql.createConnection({
         host: "remotemysql.com",
         user: "JPQ7c5oklq",
@@ -47,10 +51,12 @@ app.post('/register', function(req, res){
     var telefono =req.body.telefono;
 
     conn.connect(function(err) {
+        console.log("due");
         if (err) throw err;
         console.log("Connected!");
         conn.query("INSERT INTO User(nome, cognome, email, password, user, indirizzo, telefono) VALUES( '" + nome +"', '" + cognome + "', '" + email + "', '" + password + "', '" + nickname + "', '" + indirizzo + "' + '" + telefono + "'"  ,function(errr, fields){
             if (errr) throw errr;
+            console.log("tre");
             res.send(fields);
         });
     });
