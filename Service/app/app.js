@@ -11,59 +11,6 @@ app.get('/', function (req, res) {
     res.send({message: 'WebService RESTful'});
 });
 
-app.post('/login', function(req, res){
-    console.log("uno");
-    console.log(req.body);
-    var conn = mysql.createConnection({
-        host: "remotemysql.com",
-        user: "JPQ7c5oklq",
-        password: "g4JgzatqTc",
-        database: "JPQ7c5oklq"
-    });
-    var nickname = req.body.nickname;
-    var password = req.body.password;
-
-    conn.connect(function(err) {
-        console.log("due");
-        if (err) throw err;
-        console.log("Connected!");
-        conn.query("SELECT * FROM User WHERE user = " + nickname + " AND password =" + password ,function(errr, fields){
-            if (errr) throw errr;
-            console.log("tre");
-            res.send(fields);
-        });
-    });
-});
-
-app.post('/register', function(req, res){
-    console.log("uno");
-    console.log(req.body);
-    var conn = mysql.createConnection({
-        host: "remotemysql.com",
-        user: "JPQ7c5oklq",
-        password: "g4JgzatqTc",
-        database: "JPQ7c5oklq"
-    });
-    var nickname = req.body.nickname;
-    var password = req.body.password;
-    var nome =req.body.name;
-    var cognome =req.body.cognome;
-    var email =req.body.email;
-    var indirizzo =req.body.indirizzo;
-    var telefono =req.body.telefono;
-
-    conn.connect(function(err) {
-        console.log("due");
-        if (err) throw err;
-        console.log("Connected!");
-        conn.query("INSERT INTO User(nome, cognome, email, password, user, indirizzo, telefono) VALUES( '" + nome +"', '" + cognome + "', '" + email + "', '" + password + "', '" + nickname + "', '" + indirizzo + "' + '" + telefono + "'"  ,function(errr, fields){
-            if (errr) throw errr;
-            console.log("tre");
-            res.send(fields);
-        });
-    });
-});
-
 app.get('/Visualizza', function (req, res) {
     MongoClient.connect('mongodb+srv://admin:Admin1234@francesco-i5qce.mongodb.net/test?retryWrites=true,{useNewUrlParser: true}', function(err, db) {
         if (err) {
@@ -130,7 +77,9 @@ app.post('/TakeOff', function (req, res) {
     });
 });
 
+app.listen(3000, function(){
 
+});
 
 
 
@@ -190,4 +139,4 @@ app.post('/TogheterOn', function (req, res) {
             db.close();
         });
     });
-});
+});*/
