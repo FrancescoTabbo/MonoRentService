@@ -12,16 +12,20 @@ app.get('/', function (req, res) {
 });
 
 app.get('/Visualizza', function (req, res) {
+    console.log("uno");
     MongoClient.connect('mongodb+srv://admin:Admin1234@francesco-i5qce.mongodb.net/test?retryWrites=true,{useNewUrlParser: true}', function(err, db) {
         if (err) {
             throw err;
         }
         var dbo = db.db("Mono");
-        dbo.collection("Scooter").find({ Stato: "no" }, { _id: 0, Segnalazioni: 0, Credenziali: 0 }).toArray(function(err, result) {
+        console.log("due");
+        dbo.collection("Scooter").find({ stato: "no" }, { _id: 0, segnalazioni: 0, posizione: 1 }).toArray(function(err, result) {
             if (err) {
                 throw err;
             }
             res.send(result);
+            console.log("tre");
+            console.log(result);
             db.close();
         });
     });
@@ -35,11 +39,11 @@ app.post('/Segnala', function (req, res) {
             throw err;
         }
         var dbo = db.db("Mono");
-        var myInfo = { ID: parseInt(req.body.ID) };
-        var newData = { $push: {Segnalazioni: { Tipo: req.body.tipo, Stato: "ko", Data: new Date() } } } ;
-        dbo.collection("Scooter").updateOne(myInfo, newData, function(err, result) {
+        console.log("due");
+        dbo.collection("Scooter").updateOne({ _id: parseInt(req.body.ID) }, { $push: {segnalazioni: { tipo: req.body.tipo, stato: "ko", data: new Date() } } }, function(err, result) {
             if (err) throw err;
-            res.send({n: result.result.n})
+            res.send({n: result.result.n});
+            console.log({n: result.result.n});
             db.close();
         });
     });
@@ -55,7 +59,7 @@ app.post('/TakeOn', function (req, res) {
         var newData = { $set: { Stato: "si" } };
         dbo.collection("Scooter").updateOne(myInfo, newData, function(err, result) {
             if (err) throw err;
-            res.send({n: result.result.n})
+            res.send({n: result.result.n});
             db.close();
         });
     });
@@ -71,7 +75,7 @@ app.post('/TakeOff', function (req, res) {
         var newData = { $set: { Stato: "no" } };
         dbo.collection("Scooter").updateOne(myInfo, newData, function(err, result) {
             if (err) throw err;
-            res.send({n: result.result.n})
+            res.send({n: result.result.n});
             db.close();
         });
     });
