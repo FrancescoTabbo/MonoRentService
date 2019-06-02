@@ -50,32 +50,38 @@ app.post('/Segnala', function (req, res) {
 });
 
 app.post('/TakeOn', function (req, res) {
+    console.log("uno");
     MongoClient.connect('mongodb+srv://admin:Admin1234@francesco-i5qce.mongodb.net/test?retryWrites=true,{useNewUrlParser: true}', function(err, db) {
         if (err) {
             throw err;
         }
         var dbo = db.db("Mono");
-        var myInfo = { ID: parseInt(req.body.Scooter) };
-        var newData = { $set: { Stato: "si" } };
-        dbo.collection("Scooter").updateOne(myInfo, newData, function(err, result) {
+        var mI = { _id: parseInt(req.body.Scooter) };
+        var nD = { $set: { stato: "si" } };
+        dbo.collection("Scooter").updateOne(mI, nD, function(err, result) {
+            console.log("due");
             if (err) throw err;
             res.send({n: result.result.n});
+            console.log(result.result.n);
             db.close();
         });
     });
 });
 
 app.post('/TakeOff', function (req, res) {
+    console.log("uno");
     MongoClient.connect('mongodb+srv://admin:Admin1234@francesco-i5qce.mongodb.net/test?retryWrites=true,{useNewUrlParser: true}', function(err, db) {
         if (err) {
             throw err;
         }
         var dbo = db.db("Mono");
-        var myInfo = { ID: parseInt(req.body.Scooter) };
-        var newData = { $set: { Stato: "no" } };
-        dbo.collection("Scooter").updateOne(myInfo, newData, function(err, result) {
+        var I = { _id: parseInt(req.body.Scooter) };
+        var N = { $set: { stato: "no" } };
+        dbo.collection("Scooter").updateOne(I, N, function(err, result) {
+            console.log("due");
             if (err) throw err;
             res.send({n: result.result.n});
+            console.log(result.result.n);
             db.close();
         });
     });
