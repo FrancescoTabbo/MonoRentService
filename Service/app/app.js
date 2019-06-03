@@ -4,6 +4,8 @@ var MongoClient = require('mongodb').MongoClient;
 var mysql = require('mysql');
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
+var ObjectId = require('mongodb').ObjectId;
+
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 
@@ -40,7 +42,7 @@ app.post('/Segnala', function (req, res) {
         }
         var dbo = db.db("Mono");
         console.log("due");
-        dbo.collection("Scooter").updateOne({ _id: parseInt(req.body.ID) }, { $push: {segnalazioni: { tipo: req.body.tipo, stato: "ko", data: new Date() } } }, function(err, result) {
+        dbo.collection("Scooter").updateOne({ _id: ObjectId(req.body.ID) }, { $push: {segnalazioni: { tipo: req.body.tipo, stato: "ko", data: new Date() } } }, function(err, result) {
             if (err) throw err;
             res.send({n: result.result.n});
             console.log({n: result.result.n});
@@ -51,18 +53,15 @@ app.post('/Segnala', function (req, res) {
 
 app.post('/TakeOn', function (req, res) {
     console.log("uno");
-    MongoClient.connect('mongodb+srv://admin:Admin1234@francesco-i5qce.mongodb.net/test?retryWrites=true,{useNewUrlParser: true}', function(err, db) {
+    MongoClient.connect('mongodb+srv://admin:Admin1234@francesco-i5qce.mongodb.net/test?retryWrites=true',{useNewUrlParser: true}, function(err, db) {
         if (err) {
             throw err;
         }
         var dbo = db.db("Mono");
-        var mI = { _id: parseInt(req.body.Scooter) };
-        var nD = { $set: { stato: "si" } };
-        dbo.collection("Scooter").updateOne(mI, nD, function(err, result) {
-            console.log("due");
-            if (err) throw err;
+        dbo.collection("Scooter").updateOne({_id: ObjectId(req.body.Scooter)},{$set: { stato: "si" }}, function(err, result) {
+            if (err) throw err ;
             res.send({n: result.result.n});
-            console.log(result.result.n);
+            console.log(result.result);
             db.close();
         });
     });
@@ -70,14 +69,13 @@ app.post('/TakeOn', function (req, res) {
 
 app.post('/TakeOff', function (req, res) {
     console.log("uno");
-    MongoClient.connect('mongodb+srv://admin:Admin1234@francesco-i5qce.mongodb.net/test?retryWrites=true,{useNewUrlParser: true}', function(err, db) {
+
+    MongoClient.connect('mongodb+srv://admin:Admin1234@francesco-i5qce.mongodb.net/test?retryWrites=true',{useNewUrlParser: true}, function(err, db) {
         if (err) {
             throw err;
         }
         var dbo = db.db("Mono");
-        var I = { _id: parseInt(req.body.Scooter) };
-        var N = { $set: { stato: "no" } };
-        dbo.collection("Scooter").updateOne(I, N, function(err, result) {
+        dbo.collection("Scooter").updateOne({ _id: ObjectId(req.body.Scooter)}, { $set: { stato: "no" } }, function(err, result) {
             console.log("due");
             if (err) throw err;
             res.send({n: result.result.n});
